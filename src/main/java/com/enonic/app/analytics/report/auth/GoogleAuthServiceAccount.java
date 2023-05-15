@@ -2,7 +2,6 @@ package com.enonic.app.analytics.report.auth;
 
 import com.enonic.xp.script.bean.BeanContext;
 import com.enonic.xp.script.bean.ScriptBean;
-
 import com.google.analytics.data.v1beta.*;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -21,13 +20,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class GoogleAuthServiceAccount implements ScriptBean {
-    private static final Logger log  = LoggerFactory.getLogger(GoogleAuthServiceAccount.class);
+    private static final Logger log = LoggerFactory.getLogger(GoogleAuthServiceAccount.class);
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private static final String APPLICATION_NAME = "Enonic google Analytics data widget";
+
     public void initialize(BeanContext context) {
 
     }
@@ -49,7 +51,7 @@ public class GoogleAuthServiceAccount implements ScriptBean {
 
         BetaAnalyticsDataClient analyticsData;
         try {
-             analyticsData = BetaAnalyticsDataClient.create(clientSettings);
+            analyticsData = BetaAnalyticsDataClient.create(clientSettings);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -66,65 +68,98 @@ public class GoogleAuthServiceAccount implements ScriptBean {
         cal.add(Calendar.YEAR, -1);
         String previousYear = formatter.format(cal.getTime());
 
-        RunReportRequest request =
-                RunReportRequest.newBuilder()
+        BatchRunReportsRequest request =
+                BatchRunReportsRequest.newBuilder()
                         .setProperty("properties/" + analyticsCode)
-                        .addDimensions(Dimension.newBuilder().setName("country"))
-                        .addDimensions(Dimension.newBuilder().setName("date"))
-                        .addMetrics(Metric.newBuilder().setName("activeUsers"))
-                        .addDateRanges(
-                                DateRange.newBuilder()
-                                        .setStartDate(previousYear)
-                                        .setEndDate("today")
+                        .addRequests(
+                                RunReportRequest.newBuilder()
+                                        .addDimensions(Dimension.newBuilder().setName("country"))
+                                        .addMetrics(Metric.newBuilder().setName("totalUsers"))
+                                        .addDateRanges(
+                                                DateRange.newBuilder()
+                                                        .setStartDate(previousYear)
+                                                        .setEndDate("today")
+                                        ))
+                        .addRequests(
+                                RunReportRequest.newBuilder()
+                                        .addDimensions(Dimension.newBuilder().setName("date"))
+                                        .addMetrics(Metric.newBuilder().setName("totalUsers"))
+                                        .addMetrics(Metric.newBuilder().setName("newUsers"))
+                                        .addDateRanges(
+                                                DateRange.newBuilder()
+                                                        .setStartDate(previousYear)
+                                                        .setEndDate("today")
+                                        )
+                                        .addOrderBys(
+                                                OrderBy.newBuilder().setDimension(
+                                                        OrderBy.DimensionOrderBy.newBuilder().setDimensionName("date")
+                                                )
+                                                        .setDesc(true)
+                                        )
+                                        .setKeepEmptyRows(true))
+                        .addRequests(
+                                RunReportRequest.newBuilder()
+                                        .addDimensions(Dimension.newBuilder().setName("platformDeviceCategory"))
+                                        .addMetrics(Metric.newBuilder().setName("sessions"))
+                                        .addDateRanges(
+                                                DateRange.newBuilder()
+                                                        .setStartDate(previousYear)
+                                                        .setEndDate("today")
+                                        )
                         )
                         .build();
 
         final BetaAnalyticsDataClient analyticsData = initializeAnalytics(credentialPath);
-        PrettyReportData reportOut;
+
+        ArrayList<PrettyReportData> allReports = new ArrayList<PrettyReportData>(2);
         try (analyticsData) {
-            RunReportResponse response = analyticsData.runReport(request);
+            BatchRunReportsResponse batchResponse = analyticsData.batchRunReports(request);
 
-            reportOut = new PrettyReportData();
+            for (RunReportResponse response : batchResponse.getReportsList()) {
 
-            for (DimensionHeader diHead : response.getDimensionHeadersList()) {
-                reportOut.addDimensionHeader(diHead.getName());
-            }
-            for (MetricHeader metHead : response.getMetricHeadersList()) {
-                reportOut.addMetricHeader(metHead.getName());
-            }
-            for (Row row : response.getRowsList()) {
-                RowObject rowValues = new RowObject();
-                for (int i = 0; i>row.getDimensionValuesCount(); i++) {
-                    rowValues.dimensionValues.add(
-                            new ReportValue(row.getDimensionValues(i).getValue())
-                    );
+                PrettyReportData reportData = new PrettyReportData();
+
+                for (DimensionHeader diHead : response.getDimensionHeadersList()) {
+                    reportData.addDimensionHeader(diHead.getName());
                 }
-                for (int j = 0; j>row.getMetricValuesCount(); j++) {
-                    rowValues.metricValues.add(
-                            new ReportValue(row.getDimensionValues(j).getValue())
-                    );
+                for (MetricHeader metHead : response.getMetricHeadersList()) {
+                    reportData.addMetricHeader(metHead.getName());
+                }
+                for (Row row : response.getRowsList()) {
+                    RowObject rowValues = new RowObject();
+                    for (int i = 0; i < row.getDimensionValuesCount(); i++) {
+                        String value = row.getDimensionValues(i).getValue();
+                        rowValues.dimensionValues.add(
+                                new ReportValue(row.getDimensionValues(i).getValue())
+                        );
+                    }
+                    for (int j = 0; j < row.getMetricValuesCount(); j++) {
+                        rowValues.metricValues.add(
+                                new ReportValue(row.getMetricValues(j).getValue())
+                        );
+                    }
+
+                    reportData.addRow(rowValues);
                 }
 
-                reportOut.reportRow.add(rowValues);
+                allReports.add(reportData);
             }
         }
 
-        log.info(gson.toJson(reportOut));
-
-        return ":D";
+        return gson.toJson(allReports);
     }
 
     class PrettyReportData {
-        private ArrayList<String> dimentions = new ArrayList<String>();
-        private ArrayList<String> metrics = new ArrayList<String>();
-        private ArrayList<RowObject> reportRow = new ArrayList<RowObject>();
+        private ArrayList<String> dimensions = new ArrayList<>();
+        private ArrayList<String> metrics = new ArrayList<>();
+        private ArrayList<RowObject> reportRow = new ArrayList<>();
 
         public void addMetricHeader(String header) {
             metrics.add(header);
         }
 
         public void addDimensionHeader(String header) {
-            dimentions.add(header);
+            dimensions.add(header);
         }
 
         public void addRow(RowObject nextRow) {
@@ -133,14 +168,19 @@ public class GoogleAuthServiceAccount implements ScriptBean {
     }
 
     class ReportValue {
-        private String value;
-        ReportValue(String value) {
-            this.value = value;
+        private String value = null;
+
+        ReportValue(String valueInn) {
+            value = valueInn;
+        }
+
+        String getValue() {
+            return value;
         }
     }
 
     class RowObject {
-        public ArrayList<ReportValue> dimensionValues = new ArrayList<ReportValue>();
-        public ArrayList<ReportValue> metricValues = new ArrayList<ReportValue>();
+        public ArrayList<ReportValue> dimensionValues = new ArrayList<>();
+        public ArrayList<ReportValue> metricValues = new ArrayList<>();
     }
 }

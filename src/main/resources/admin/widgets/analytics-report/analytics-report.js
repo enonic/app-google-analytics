@@ -24,8 +24,8 @@ function get(req) {
 
     let siteConfig;
 
-    // This is one annoying way to get the siteConfig.
-    // Second alternative is executing it in a context also a lot of code.
+    // Would like a better way to get site config
+    // A bad alternative is executing it in a created context
     const site = contentLib.getSite({key: contentId});
     if (site.data && site.data.siteConfig) {
         site.data.siteConfig.forEach(element => {
@@ -33,24 +33,29 @@ function get(req) {
                 siteConfig = element.config;
             }
         });
-
     }
+
     if (!siteConfig) {
         //TODO Trigger this aka test it
         return ErrorResponse("Missing measure id? No site configuration found for application.");
     }
+    const scriptAssetUrl = portalLib.assetUrl({path: 'js/client.js'});
 
-    log.info(`Measure id ${siteConfig.measureId}`);
-
-    const a = ga_auth.authenticate(siteConfig.measureId, credentialPath);
-
-    log.info(JSON.stringify(a));
+    const reportData = ga_auth.authenticate(siteConfig.measureId, credentialPath);
 
     const widgetId = app.name;
 
     return {
         contentType: 'text/html',
-        body: `<widget id="widget-${widgetId}">:D</widget>`,
+        body: `<widget id="widget-${widgetId}">
+            <div id="googleAnalyticsSiteData">
+                <div id="googleAnalyticsGeoChart"></div>
+                <div id="googleAnalyticsSiteUserChart"></div>
+                <div id="googleAnalyticsDevices"></div>
+            </div>
+            <script id="googleAnalyticsReportData" type="application/json">${reportData}</script>
+            <script type="text/javascript" src="${scriptAssetUrl}"></script>
+        </widget>`,
     }
 }
 
