@@ -74,7 +74,7 @@ public class GoogleAuthServiceAccount implements ScriptBean {
                         .addRequests(
                                 RunReportRequest.newBuilder()
                                         .addDimensions(Dimension.newBuilder().setName("country"))
-                                        .addMetrics(Metric.newBuilder().setName("totalUsers"))
+                                        .addMetrics(Metric.newBuilder().setName("activeUsers"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
                                                         .setStartDate(previousYear)
@@ -83,7 +83,7 @@ public class GoogleAuthServiceAccount implements ScriptBean {
                         .addRequests(
                                 RunReportRequest.newBuilder()
                                         .addDimensions(Dimension.newBuilder().setName("date"))
-                                        .addMetrics(Metric.newBuilder().setName("totalUsers"))
+                                        .addMetrics(Metric.newBuilder().setName("activeUsers"))
                                         .addMetrics(Metric.newBuilder().setName("newUsers"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
@@ -106,6 +106,21 @@ public class GoogleAuthServiceAccount implements ScriptBean {
                                                         .setStartDate(previousYear)
                                                         .setEndDate("today")
                                         )
+                        )
+                        .addRequests(
+                                RunReportRequest.newBuilder()
+                                        .addDimensions(Dimension.newBuilder().setName("browser"))
+                                        .addMetrics(Metric.newBuilder().setName("sessions"))
+                                        .addDateRanges(
+                                                DateRange.newBuilder()
+                                                        .setStartDate(previousYear)
+                                                        .setEndDate("today")
+                                        )
+                        )
+                        .addRequests(
+                                RunReportRequest.newBuilder()
+                                        .addDimensions(Dimension.newBuilder().setName("pagePath"))
+                                        .addMetrics(Metric.newBuilder().setName("screenPageViews"))
                         )
                         .build();
 

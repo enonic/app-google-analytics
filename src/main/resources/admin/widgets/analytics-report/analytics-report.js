@@ -16,10 +16,17 @@ function get(req) {
         }
     }
 
-    let contentId = req.params.contentId ? req.params.contentId : portalLib.getContent()._id;
+    let contentId;
+    if (req.params.contentId) {
+        contentId = req.params.contentId;
+    } else {
+        let content = portalLib.getContent();
 
-    if (!contentId) {
-        return ErrorResponse('No content selected');
+        if (content === null) {
+            return ErrorResponse("No content selected");
+        } else {
+            contentId = content._id;
+        }
     }
 
     let siteConfig;
@@ -39,19 +46,27 @@ function get(req) {
         //TODO Trigger this aka test it
         return ErrorResponse("Missing measure id? No site configuration found for application.");
     }
+
+    const serviceUrl = portalLib.serviceUrl({
+        service: 'gaSettings',
+        type: "absolute",
+    })
     const scriptAssetUrl = portalLib.assetUrl({path: 'js/client.js'});
+    const cssUrl = portalLib.assetUrl({ path: 'css/widget.css' });
 
     const reportData = ga_auth.authenticate(siteConfig.measureId, credentialPath);
 
-    const widgetId = app.name;
+    const widgetId = "widget-com-enonic-app-gareport"; // app.name.replace(/\./g, "-");
 
     return {
         contentType: 'text/html',
-        body: `<widget id="widget-${widgetId}">
+        body: `<widget id="${widgetId}" data-settingsurl="${serviceUrl}">
+            <link href="${cssUrl}" rel="stylesheet">
             <div id="googleAnalyticsSiteData">
                 <div id="googleAnalyticsGeoChart"></div>
                 <div id="googleAnalyticsSiteUserChart"></div>
                 <div id="googleAnalyticsDevices"></div>
+                <div id="googleAnalyticsBrowsers"></div>
             </div>
             <script id="googleAnalyticsReportData" type="application/json">${reportData}</script>
             <script type="text/javascript" src="${scriptAssetUrl}"></script>

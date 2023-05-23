@@ -1,0 +1,10 @@
+
+#widget-com-enonic-app-gareport {
+    display: block;
+    margin: 10px;
+}
+
+#googleAnalyticsDevices,
+#googleAnalyticsBrowsers {
+    display: inline-block;
+}
