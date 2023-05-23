@@ -8,3 +8,7 @@
 #googleAnalyticsBrowsers {
     display: inline-block;
 }
+
+#googleAnalyticsReferer {
+    margin-top: 20px;
+}

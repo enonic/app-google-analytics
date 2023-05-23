@@ -3,8 +3,12 @@ const contentLib = require('/lib/xp/content');
 const thymeleaf = require('/lib/thymeleaf');
 
 function get(req) {
-    const ga_auth = __.newBean("com.enonic.app.analytics.report.auth.GoogleAuthServiceAccount");
+    const report = __.newBean("com.enonic.app.analytics.report.auth.GoogleReportData");
     let credentialPath = "";
+    let content;
+    let type;
+    let siteConfig;
+    let reportData;
 
     if (app.config) {
         //TODO document key name + example
@@ -16,24 +20,26 @@ function get(req) {
         }
     }
 
-    let contentId;
     if (req.params.contentId) {
-        contentId = req.params.contentId;
+        content = contentLib.get({ key: req.params.contentId });
     } else {
-        let content = portalLib.getContent();
-
-        if (content === null) {
-            return ErrorResponse("No content selected");
-        } else {
-            contentId = content._id;
-        }
+        content = portalLib.getContent();
     }
 
-    let siteConfig;
+    if (content === null) {
+        return ErrorResponse("No content selected");
+    }
+
+    const site = contentLib.getSite({ key: content._id });
+
+    if (site._id === content._id) {
+        type = "site";
+    } else {
+        type = "page";
+    }
 
     // Would like a better way to get site config
     // A bad alternative is executing it in a created context
-    const site = contentLib.getSite({key: contentId});
     if (site.data && site.data.siteConfig) {
         site.data.siteConfig.forEach(element => {
             if (element.applicationKey = app.name) {
@@ -47,6 +53,12 @@ function get(req) {
         return ErrorResponse("Missing measure id? No site configuration found for application.");
     }
 
+    if (type === "site") {
+        reportData = report.runSiteReports(siteConfig.measureId, credentialPath);
+    } else {
+        reportData = report.runPageReports(siteConfig.measureId, credentialPath, stripSite(content._path, site._path));
+    }
+
     const serviceUrl = portalLib.serviceUrl({
         service: 'gaSettings',
         type: "absolute",
@@ -54,24 +66,33 @@ function get(req) {
     const scriptAssetUrl = portalLib.assetUrl({path: 'js/client.js'});
     const cssUrl = portalLib.assetUrl({ path: 'css/widget.css' });
 
-    const reportData = ga_auth.authenticate(siteConfig.measureId, credentialPath);
-
     const widgetId = "widget-com-enonic-app-gareport"; // app.name.replace(/\./g, "-");
 
     return {
         contentType: 'text/html',
-        body: `<widget id="${widgetId}" data-settingsurl="${serviceUrl}">
+        body: `<widget id="${widgetId}" data-type="${type}" data-settingsurl="${serviceUrl}">
             <link href="${cssUrl}" rel="stylesheet">
             <div id="googleAnalyticsSiteData">
+                <!-- site -->
                 <div id="googleAnalyticsGeoChart"></div>
                 <div id="googleAnalyticsSiteUserChart"></div>
                 <div id="googleAnalyticsDevices"></div>
                 <div id="googleAnalyticsBrowsers"></div>
+                <div id="googleAnalyticsPages"></div>
+                <div id="googleAnalyticsReferer"></div>
+                <!-- Page -->
+                <div id="googleAnalyticsPageViews"></div>
+                <div id="googleAnalyticsVisiters"></div>
             </div>
             <script id="googleAnalyticsReportData" type="application/json">${reportData}</script>
             <script type="text/javascript" src="${scriptAssetUrl}"></script>
         </widget>`,
     }
+}
+
+function stripSite(contentPath, sitePath) {
+    const stripSite = contentPath.slice(sitePath.length);
+    return stripSite.length > 0 ? stripSite : "/";
 }
 
 function ErrorResponse(message) {

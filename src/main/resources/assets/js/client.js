@@ -8,10 +8,7 @@ if (!window.google) {
     init();
 }
 
-
-
 function init() {
-    // Our widget element.
     window.googleWidget = document.getElementById("widget-com-enonic-app-gareport");
 
     fetch(window.googleWidget.dataset.settingsurl)
@@ -39,7 +36,7 @@ function init() {
  */
 function loadGoogleApis(key, callback) {
     const googleLoadOptions = {
-        'packages': ['geochart', 'corechart', 'bar'],
+        'packages': ['geochart', 'corechart', 'bar', 'table'],
     };
 
     if (key && key.length > 0) {
@@ -52,17 +49,15 @@ function loadGoogleApis(key, callback) {
 }
 
 function drawData(ApiKey) {
-    const reportElem = document.getElementById("googleAnalyticsReportData");
-    const analyticsData = JSON.parse(reportElem.textContent);
-
+    let lastWidgetWidth = 0;
 
     const resizeObserver = new ResizeObserver(entries => {
         for (const entry of entries) {
-            if (entry.contentBoxSize) {
+            if (entry.borderBoxSize != lastWidgetWidth) {
                 throttle(() => {
+                    lastWidgetWidth = entry.borderBoxSize[0].inlineSize;
                     drawAllCharts(ApiKey);
                 }, 100);
-                break;
             }
         }
     });
@@ -78,18 +73,29 @@ function drawData(ApiKey) {
     }
 
     function drawAllCharts(apiKey) {
-        const widget = window.googleWidget;
+        const reportElem = document.getElementById("googleAnalyticsReportData");
+        const analyticsData = JSON.parse(reportElem.textContent);
 
-        if (apiKey) {
-            // The map draws identical without the api key...
-            // A lot of console errors show up without the key
-            // The gradient line data does not work.
-            drawGeoChart(analyticsData[0]);
+        const type = window.googleWidget.dataset.type;
+
+        if (type == "site") {
+            if (apiKey) {
+                // The map draws identical without the api key...
+                // A lot of console errors show up without the key
+                // The gradient line data does not work.
+                drawGeoChart(analyticsData[0]);
+            }
+            drawUserChart(analyticsData[1]);
+            drawDeviceChart(analyticsData[2]);
+            drawBrowserChart(analyticsData[3]);
+            drawTopPagesChart(analyticsData[4]);
+            drawTopReferersChart(analyticsData[5]);
+
+        } else if (type == "page") {
+            drawPageViewsChart(analyticsData[0]);
+            drawVisitersChart(analyticsData[1]);
+            //TODO draw Kpi
         }
-        drawUserChart(analyticsData[1]);
-        drawDeviceChart(analyticsData[2]);
-        drawBrowserChart(analyticsData[3]);
-
     }
 
 
@@ -101,7 +107,7 @@ function drawData(ApiKey) {
         const visualizationData = createChartData(chartData);
 
         const options = {
-            width: window.googleWidget.getBoundingClientRect().width - 50,
+            width: "90%",
         };
 
         const usersGeoChart = new google.visualization.GeoChart(document.getElementById('googleAnalyticsGeoChart'));
@@ -113,14 +119,7 @@ function drawData(ApiKey) {
         const chartData = createChartData(
             reportData,
             {
-                dimModify: value => new Date(
-                    "".concat(
-                        value.slice(0, 4),
-                        "-",
-                        value.slice(4, 6),
-                        "-",
-                        value.slice(6, 8))
-                ).toLocaleDateString(),
+                dimModify: value => new Date(value).toLocaleDateString(),
                 metModify: value => parseInt(value),
                 reverse: true
             }
@@ -136,7 +135,8 @@ function drawData(ApiKey) {
             },
             hAxis: {
                 title: "Dates"
-            }
+            },
+            width: "90%"
         };
 
         const chart = new google.charts.Bar(document.getElementById('googleAnalyticsSiteUserChart'));
@@ -155,7 +155,7 @@ function drawData(ApiKey) {
         const options = {
             title: 'Devices',
             is3D: true,
-            width: Math.floor((window.googleWidget.getBoundingClientRect().width - 20) / 2) // half parent size
+            width: "45%" // half parent size
         };
 
         const chart = new google.visualization.PieChart(document.getElementById('googleAnalyticsDevices'));
@@ -174,7 +174,7 @@ function drawData(ApiKey) {
         const options = {
             title: 'Browsers',
             is3D: true,
-            width: Math.floor((window.googleWidget.getBoundingClientRect().width - 20) / 2) // half parent size
+            width: "45%" // half parent size
         }
 
         const chart = new google.visualization.PieChart(document.getElementById('googleAnalyticsBrowsers'));
@@ -182,17 +182,67 @@ function drawData(ApiKey) {
         chart.draw(chartData, options);
     }
 
-    function drawTop10Pages(reportData) {
-        //TODO
+    function drawTopPagesChart(reportData) {
+        const chartData = createChartData(reportData);
+
+        const options = {
+            width: "90%",
+            page: "enable",
+        };
+
+        const chart = new google.visualization.Table(document.getElementById('googleAnalyticsPages'));
+
+        chart.draw(chartData, options);
     }
 
-    function drawTop10Referers(reportData) {
-        //TODO
+    function drawTopReferersChart(reportData) {
+        const chartData = createChartData(reportData);
+
+        const options = {
+            width: "90%",
+            page: "enable",
+        };
+
+        const chart = new google.visualization.Table(document.getElementById('googleAnalyticsReferer'));
+
+        chart.draw(chartData, options);
     }
 
     /**
      * Page charts
      */
+
+    function drawPageViewsChart(reportData) {
+        const chartData = createChartData(reportData, {
+            dimModify: value => new Date(parseCompactDate(value)).toLocaleDateString(),
+            metModify: value => parseInt(value),
+        });
+
+        const options = {
+            title: 'Pageviews by Date',
+            width: "90%"
+        }
+
+        const chart = new google.visualization.LineChart(document.getElementById('googleAnalyticsPageViews'));
+
+        chart.draw(chartData, options);
+    }
+
+    function drawVisitersChart(reportData) {
+        console.log(reportData);
+        const chartData = createChartData(reportData, {
+            metModify: value => parseInt(value)
+        });
+
+        const options = {
+            title: 'Visitors',
+            width: "90%"
+        }
+
+        const chart = new google.visualization.PieChart(document.getElementById('googleAnalyticsVisiters'));
+
+        chart.draw(chartData, options);
+    }
 
     /**
      * From array to google chart expected data
@@ -233,6 +283,15 @@ function drawData(ApiKey) {
 
         return google.visualization.arrayToDataTable(dataTable);
     }
+}
+
+/** Send in 20600501 out 2060-05-01 */
+function parseCompactDate(val) {
+    return val.slice(0, 4) +
+        "-" +
+        val.slice(4, 6) +
+        "-" +
+        val.slice(6, 8);
 }
 
 /**
