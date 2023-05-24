@@ -4,11 +4,21 @@
     margin: 0 10px;
 }
 
+#widget-com-enonic-app-gareport>h1 {
+    font-size: 2rem;
+}
 #googleAnalyticsDevices,
 #googleAnalyticsBrowsers {
     display: inline-block;
 }
-
 #googleAnalyticsReferer {
     margin-top: 20px;
+}
+
+.container {
+    display: none;
+}
+
+.container>h2 {
+    font-size: 1.2rem;
 }

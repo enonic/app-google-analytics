@@ -73,13 +73,20 @@ function get(req) {
         body: `<widget id="${widgetId}" data-type="${type}" data-settingsurl="${serviceUrl}">
             <link href="${cssUrl}" rel="stylesheet">
             <div id="googleAnalyticsSiteData">
+                <h1>Last month</h1>
                 <!-- site -->
                 <div id="googleAnalyticsGeoChart"></div>
                 <div id="googleAnalyticsSiteUserChart"></div>
                 <div id="googleAnalyticsDevices"></div>
                 <div id="googleAnalyticsBrowsers"></div>
-                <div id="googleAnalyticsPages"></div>
-                <div id="googleAnalyticsReferer"></div>
+                <div class="container" id="googleAnalyticsPages">
+                    <h2>Top pages<h2>
+                    <div class="chart"></div>
+                </div>
+                <div class="container" id="googleAnalyticsReferer">
+                    <h2>Top Referrers<h2>
+                    <div class="chart"></div>
+                </div>
                 <!-- Page -->
                 <div id="googleAnalyticsPageViews"></div>
                 <div id="googleAnalyticsVisiters"></div>

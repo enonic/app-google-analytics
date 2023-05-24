@@ -60,8 +60,8 @@ public class GoogleReportData implements ScriptBean {
     public String runSiteReports(String analyticsCode, String credentialPath) throws Exception {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, -1);
-        String previousYear = formatter.format(cal.getTime());
+        cal.add(Calendar.MONTH, -1);
+        String previous = formatter.format(cal.getTime());
 
         BatchRunReportsRequest request =
                 BatchRunReportsRequest.newBuilder()
@@ -72,7 +72,7 @@ public class GoogleReportData implements ScriptBean {
                                         .addMetrics(Metric.newBuilder().setName("activeUsers"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
-                                                        .setStartDate(previousYear)
+                                                        .setStartDate(previous)
                                                         .setEndDate("today")
                                         ))
                         .addRequests(
@@ -82,7 +82,7 @@ public class GoogleReportData implements ScriptBean {
                                         .addMetrics(Metric.newBuilder().setName("newUsers"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
-                                                        .setStartDate(previousYear)
+                                                        .setStartDate(previous)
                                                         .setEndDate("today")
                                         )
                                         .addOrderBys(
@@ -99,7 +99,7 @@ public class GoogleReportData implements ScriptBean {
                                         .addMetrics(Metric.newBuilder().setName("sessions"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
-                                                        .setStartDate(previousYear)
+                                                        .setStartDate(previous)
                                                         .setEndDate("today")
                                         ))
                         .addRequests(
@@ -108,7 +108,7 @@ public class GoogleReportData implements ScriptBean {
                                         .addMetrics(Metric.newBuilder().setName("sessions"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
-                                                        .setStartDate(previousYear)
+                                                        .setStartDate(previous)
                                                         .setEndDate("today")
                                         ))
 
@@ -123,7 +123,7 @@ public class GoogleReportData implements ScriptBean {
                                         .addMetrics(Metric.newBuilder().setName("screenPageViews"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
-                                                        .setStartDate(previousYear)
+                                                        .setStartDate(previous)
                                                         .setEndDate("today")
                                         )
                                         .addOrderBys(
@@ -141,7 +141,7 @@ public class GoogleReportData implements ScriptBean {
                                         .addMetrics(Metric.newBuilder().setName("activeUsers"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
-                                                        .setStartDate(previousYear)
+                                                        .setStartDate(previous)
                                                         .setEndDate("today")
                                         )
                                         .addOrderBys(
@@ -175,8 +175,8 @@ public class GoogleReportData implements ScriptBean {
     public String runPageReports(String analyticsCode, String credentialPath, String pagePath) throws Exception {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, -1);
-        String previousYear = formatter.format(cal.getTime());
+        cal.add(Calendar.MONTH, -1);
+        String previous = formatter.format(cal.getTime());
 
         BatchRunReportsRequest request =
                 BatchRunReportsRequest.newBuilder()
@@ -188,7 +188,7 @@ public class GoogleReportData implements ScriptBean {
                                         .addMetrics(Metric.newBuilder().setName("newUsers"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
-                                                        .setStartDate(previousYear)
+                                                        .setStartDate(previous)
                                                         .setEndDate("today")
                                         )
                                         .setDimensionFilter(
@@ -217,7 +217,7 @@ public class GoogleReportData implements ScriptBean {
                                         .addMetrics(Metric.newBuilder().setName("sessions"))
                                         .addDateRanges(
                                                 DateRange.newBuilder()
-                                                        .setStartDate(previousYear)
+                                                        .setStartDate(previous)
                                                         .setEndDate("today")
                                         )
                                         .setDimensionFilter(

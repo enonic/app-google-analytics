@@ -98,14 +98,16 @@ function drawData(ApiKey) {
         }
     }
 
-
     /**
      * Site charts
      */
-
     function drawGeoChart(chartData) {
-        const visualizationData = createChartData(chartData);
 
+        const visualizationData = createChartData(chartData, {
+            metModify: value => parseInt(value),
+        });;
+
+        // title: "Active users worldwide",
         const options = {
             width: "90%",
         };
@@ -190,7 +192,10 @@ function drawData(ApiKey) {
             page: "enable",
         };
 
-        const chart = new google.visualization.Table(document.getElementById('googleAnalyticsPages'));
+        const element = document.getElementById('googleAnalyticsPages');
+        element.style.display = "block";
+
+        const chart = new google.visualization.Table(element.querySelector('.chart'));
 
         chart.draw(chartData, options);
     }
@@ -203,7 +208,10 @@ function drawData(ApiKey) {
             page: "enable",
         };
 
-        const chart = new google.visualization.Table(document.getElementById('googleAnalyticsReferer'));
+        const element = document.getElementById('googleAnalyticsReferer');
+        element.style.display = "block";
+
+        const chart = new google.visualization.Table(element.querySelector('.chart'));
 
         chart.draw(chartData, options);
     }
@@ -211,7 +219,6 @@ function drawData(ApiKey) {
     /**
      * Page charts
      */
-
     function drawPageViewsChart(reportData) {
         const chartData = createChartData(reportData, {
             dimModify: value => new Date(parseCompactDate(value)).toLocaleDateString(),
@@ -223,13 +230,17 @@ function drawData(ApiKey) {
             width: "90%"
         }
 
-        const chart = new google.visualization.LineChart(document.getElementById('googleAnalyticsPageViews'));
+        if (chartData.getNumberOfRows() > 0) {
+            const element = document.getElementById('googleAnalyticsPageViews');
+            element.style.display = "block";
 
-        chart.draw(chartData, options);
+            const chart = new google.visualization.LineChart(element);
+
+            chart.draw(chartData, options);
+        }
     }
 
     function drawVisitersChart(reportData) {
-        console.log(reportData);
         const chartData = createChartData(reportData, {
             metModify: value => parseInt(value)
         });
@@ -280,6 +291,10 @@ function drawData(ApiKey) {
         }
 
         dataTable.push(...dataTableEntrys);
+
+        if (options && options.debug) {
+            console.log("DataTable", dataTable);
+        }
 
         return google.visualization.arrayToDataTable(dataTable);
     }
