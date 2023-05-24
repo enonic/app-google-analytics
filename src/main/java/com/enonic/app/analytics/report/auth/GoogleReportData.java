@@ -207,7 +207,7 @@ public class GoogleReportData implements ScriptBean {
                                                                 OrderBy.DimensionOrderBy.newBuilder()
                                                                         .setDimensionName("date")
                                                         )
-                                                        .setDesc(true)
+                                                        .setDesc(false)
                                         )
                                         .setKeepEmptyRows(true)
                         )

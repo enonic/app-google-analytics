@@ -119,7 +119,7 @@ function drawData(ApiKey) {
         const chartData = createChartData(
             reportData,
             {
-                dimModify: value => new Date(value).toLocaleDateString(),
+                dimModify: value => new Date(parseCompactDate(value)).toLocaleDateString(),
                 metModify: value => parseInt(value),
                 reverse: true
             }
