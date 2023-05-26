@@ -107,12 +107,14 @@ function drawData(ApiKey) {
             metModify: value => parseInt(value),
         });;
 
-        // title: "Active users worldwide",
         const options = {
             width: "90%",
         };
 
-        const usersGeoChart = new google.visualization.GeoChart(document.getElementById('googleAnalyticsGeoChart'));
+        const element = document.getElementById('googleAnalyticsGeoChart');
+        element.style.display = "block";
+
+        const usersGeoChart = new google.visualization.GeoChart(element.querySelector('.chart'));
 
         usersGeoChart.draw(visualizationData, options);
     }
@@ -138,6 +140,9 @@ function drawData(ApiKey) {
             hAxis: {
                 title: "Dates"
             },
+            legend: {
+                position: "bottom"
+            },
             width: "90%"
         };
 
@@ -157,7 +162,10 @@ function drawData(ApiKey) {
         const options = {
             title: 'Devices',
             is3D: true,
-            width: "45%" // half parent size
+            width: (window.googleWidget.getBoundingClientRect().width - 20) / 2,
+            legend: {
+                position: 'bottom'
+            }
         };
 
         const chart = new google.visualization.PieChart(document.getElementById('googleAnalyticsDevices'));
@@ -176,7 +184,10 @@ function drawData(ApiKey) {
         const options = {
             title: 'Browsers',
             is3D: true,
-            width: "45%" // half parent size
+            width: (window.googleWidget.getBoundingClientRect().width - 20) / 2,
+            legend: {
+                position: 'bottom'
+            }
         }
 
         const chart = new google.visualization.PieChart(document.getElementById('googleAnalyticsBrowsers'));
@@ -189,7 +200,7 @@ function drawData(ApiKey) {
 
         const options = {
             width: "90%",
-            page: "enable",
+            page: "enable"
         };
 
         const element = document.getElementById('googleAnalyticsPages');

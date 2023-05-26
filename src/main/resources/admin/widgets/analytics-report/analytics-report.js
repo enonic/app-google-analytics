@@ -48,15 +48,15 @@ function get(req) {
         });
     }
 
-    if (!siteConfig) {
+    if (!siteConfig || !siteConfig.propertyId) {
         //TODO Trigger this aka test it
-        return ErrorResponse("Missing measure id? No site configuration found for application.");
+        return ErrorResponse("Missing property id? No site configuration found for the analytics integration");
     }
 
     if (type === "site") {
-        reportData = report.runSiteReports(siteConfig.measureId, credentialPath);
+        reportData = report.runSiteReports(siteConfig.propertyId, credentialPath);
     } else {
-        reportData = report.runPageReports(siteConfig.measureId, credentialPath, stripSite(content._path, site._path));
+        reportData = report.runPageReports(siteConfig.propertyId, credentialPath, stripSite(content._path, site._path));
     }
 
     const serviceUrl = portalLib.serviceUrl({
@@ -75,7 +75,10 @@ function get(req) {
             <div id="googleAnalyticsSiteData">
                 <h1>Last month</h1>
                 <!-- site -->
-                <div id="googleAnalyticsGeoChart"></div>
+                <div class="container" id="googleAnalyticsGeoChart">
+                    <h2>Active users</h2>
+                    <div class="chart"></div>
+                </div>
                 <div id="googleAnalyticsSiteUserChart"></div>
                 <div id="googleAnalyticsDevices"></div>
                 <div id="googleAnalyticsBrowsers"></div>

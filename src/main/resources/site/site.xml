@@ -2,18 +2,31 @@
 <site>
     <form>
         <input type="TextLine" name="measureId">
-            <label>Analytics measurement Id</label>
-            <occurrences minimum="1" maximum="1" />
+            <label>Measurement ID</label>
+            <help-text>Measure id looks like: G-XXXXXXX. Where X is numbers</help-text>
             <config>
-                <regexp>^[0-9]*$</regexp>
+                <regexp>^G-[\w\d-]+$</regexp>
             </config>
         </input>
         <input type="Checkbox" name="enableTracking">
             <label>Enable tracking</label>
-            <occurrences minimum="0" maximum="1" />
         </input>
+        <input type="Checkbox" name="enableAnonymization">
+            <label>Enable IP anonymization</label>
+        </input>
+        <field-set>
+            <label>Widget configuration</label>
+            <items>
+                <input type="TextLine" name="propertyId">
+                    <label>Property Id</label>
+                    <config>
+                        <regexp>^[0-9]*$</regexp>
+                    </config>
+                </input>
+            </items>
+        </field-set>
     </form>
     <processors>
-        <!--        <response-processor name="ga-report" order="10"/>-->
+        <response-processor name="ga-report" order="10" />
     </processors>
 </site>
