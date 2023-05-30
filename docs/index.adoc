@@ -1,0 +1,47 @@
+# App-google-report
+How to setup the google report app with Enonic XP.
+
+:toc:
+
+## Tracking
+
+Setting up the tracking is only adding one value to the application set on the site
+
+The app requires a google analytics acount setup for the site you want to track.
+
+In google analytics go to admin settings
+
+The admin button is located on the bottom left
+
+![](images/AdminButton.png)
+
+There should be a datastream connected to the site for tracking
+
+![](images/AdminPanel.png)
+
+Opening up the data stream and select the one for the site we want to track.
+
+![](images/DataStream.png)
+
+Find its measureId and copy the value. (Use the icon next to it)
+
+Now we jsut need to add this value to our site in Enonic
+
+Just login to the server.
+If you have not allready installed the google report application do that in the application tool found when opening the dashboard.
+
+In content studio add the application to your site
+And open up settings for this app (pencil icon)
+
+![](images/SiteApplication.png)
+
+In the site settings simply add a new measureId and enable tracking.
+
+![](images/AppSettings.png)
+
+Thats it. If you publish the site now the tracking will be live and you can track user data.
+
+## Widget
+
+Setting up the widget is a bit more complicated, but gives a nice overview over the statistics of the site.
+
