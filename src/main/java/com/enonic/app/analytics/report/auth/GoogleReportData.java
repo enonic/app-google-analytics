@@ -16,8 +16,10 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GoogleReportData {
 
@@ -139,10 +141,7 @@ public class GoogleReportData {
     }
 
     public String runSiteReports(String analyticsCode, String credentialPath) {
-
-        Instant prevMonth = Instant.now().minus(1, ChronoUnit.MONTHS);
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String previous = formatter.format(prevMonth);
+        String previous = LocalDate.now().minusMonths(1).toString();
 
         BatchRunReportsRequest request = firstBatch(previous, analyticsCode);
         BatchRunReportsRequest secondRequest = secondBatch(previous, analyticsCode);
@@ -222,9 +221,7 @@ public class GoogleReportData {
     }
 
     public String runPageReports(String analyticsCode, String credentialPath, String pagePath) {
-        Instant prevMonth = Instant.now().minus(1, ChronoUnit.MONTHS);
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String previous = formatter.format(prevMonth);
+        String previous = LocalDate.now().minusMonths(1).toString();
 
         BatchRunReportsRequest request = reportsRequest(previous, analyticsCode, pagePath);
 
