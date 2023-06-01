@@ -13,15 +13,15 @@ In google analytics go to admin settings
 
 The admin button is located on the bottom left
 
-![](images/AdminButton.png)
+image::images/AdminButton.png[]
 
 There should be a datastream connected to the site for tracking
 
-![](images/AdminPanel.png)
+image::images/AdminPanel.png[]
 
 Opening up the data stream and select the one for the site we want to track.
 
-![](images/DataStream.png)
+image::images/DataStream.png[]
 
 Find its measureId and copy the value. (Use the icon next to it)
 
@@ -33,15 +33,55 @@ If you have not allready installed the google report application do that in the 
 In content studio add the application to your site
 And open up settings for this app (pencil icon)
 
-![](images/SiteApplication.png)
+image::images/SiteApplication.png[]
 
 In the site settings simply add a new measureId and enable tracking.
 
-![](images/AppSettings.png)
+image::images/AppSettings.png[]
 
 Thats it. If you publish the site now the tracking will be live and you can track user data.
 
 ## Widget
 
-Setting up the widget is a bit more complicated, but gives a nice overview over the statistics of the site.
+Setting up the widget has a few more steps, but gives a nice overview over the statistics of the site.
+The next setup will require file access to the servers configuration files
 
+In the analytics admin page. (Cog wheel at the bottom left of the page)
+
+Find the Property Settings and press it to show its related information.
+
+image::images/PropertySettings.png[]
+
+When opening it find its property ID and copy it
+
+image::images/PropertyId.png[]
+
+Paste it into the app settings in content studio
+
+image::images/AppSettingsPropertyId.png[]
+
+Now that we are done with the site setup. We just have to configuration couple of apis and setting the authentication
+This is done with a service account in the app configuration file.
+
+First create an account in https://console.cloud.google.com
+This is where we will create a service account for authentication with our app.
+
+After creating an account open up the IAM & Admin page and the Service Accounts sub menu
+
+image::images/CloudAdminServiceAccounts.png[]
+
+Create a new service account. This will be used to access the analytics data.
+Give it any name and generate an email address for the service account.
+
+image::images/ServiceAccountCreate.png[]
+
+With this service we will need to create a access key.
+Click the new service key that we just created an go to the keys tab.
+
+image::images/ServiceAccountKeys.png[]
+
+Add a new key. Its needs to be of type *json*
+
+Securley store this key. We will need to upload it to the server hosting enonic.
+
+Go back to the overview of all accounts and copy
