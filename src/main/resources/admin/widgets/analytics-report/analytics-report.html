@@ -1,0 +1,27 @@
+<widget th:id="${widgetId}" th:attr="data-type=${type}, data-settingsurl=${serviceUrl}">
+    <link th:href="${cssUrl}" rel="stylesheet">
+    <div id="googleAnalyticsSiteData">
+        <h1>Last month</h1>
+        <!-- site -->
+        <div class="container" id="googleAnalyticsGeoChart">
+            <h2>Active users</h2>
+            <div class="chart"></div>
+        </div>
+        <div id="googleAnalyticsSiteUserChart"></div>
+        <div id="googleAnalyticsDevices"></div>
+        <div id="googleAnalyticsBrowsers"></div>
+        <div class="container" id="googleAnalyticsPages">
+            <h2>Top pages</h2>
+            <div class="chart"></div>
+        </div>
+        <div class="container" id="googleAnalyticsReferer">
+            <h2>Top Referrers</h2>
+            <div class="chart"></div>
+        </div>
+        <!-- Page -->
+        <div id="googleAnalyticsPageViews"></div>
+        <div id="googleAnalyticsVisiters"></div>
+    </div>
+    <script id="googleAnalyticsReportData" type="application/json">[(${reportData})]</script>
+    <script type="text/javascript" th:src="${scriptAssetUrl}"></script>
+</widget>

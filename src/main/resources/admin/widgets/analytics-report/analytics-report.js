@@ -2,56 +2,88 @@ const portalLib = require('/lib/xp/portal');
 const contentLib = require('/lib/xp/content');
 const thymeleaf = require('/lib/thymeleaf');
 
-function get(req) {
-    const report = __.newBean("com.enonic.app.analytics.report.auth.GoogleReportData");
-    let credentialPath = "";
-    let content;
-    let type;
-    let siteConfig;
-    let reportData;
+const view = resolve("analytics-report.html");
 
-    if (app.config) {
-        //TODO document key name + example
-        if (app.config && app.config["ga.credentialPath"]) {
-            // log.info(`CredentialPath: ${app.config["ga.credentialPath"]}`);
-            credentialPath = app.config["ga.credentialPath"];
-        } else {
-            return ErrorResponse("No path to credentials found");
-        }
+function ClientException(message) {
+    this.name = "ClientException";
+    this.message = message;
+}
+
+function getCredentialsPath(appRef) {
+    if (!appRef.config) {
+        throw ClientException("No config found");
     }
+    if (!appRef.config["ga.credentialPath"]) {
+        throw ClientException("No path to credentials found");
+    }
+    return appRef.config["ga.credentialPath"];
+}
 
-    if (req.params.contentId) {
+function getContent(req) {
+    let content;
+    if (req && req.params && req.params.contentId) {
         content = contentLib.get({ key: req.params.contentId });
     } else {
         content = portalLib.getContent();
     }
 
-    if (content === null) {
-        return ErrorResponse("No content selected");
+    if (content == null) {
+        throw ClientException("No content selected");
     }
 
-    const site = contentLib.getSite({ key: content._id });
+    return content;
+}
 
-    if (site._id === content._id) {
-        type = "site";
+function getContentType(content) {
+    if (content.type == "portal:site") {
+        return "site";
     } else {
-        type = "page";
+        return "page";
     }
+}
 
-    // Would like a better way to get site config
+// Would like a better way to get site config
     // A bad alternative is executing it in a created context
-    if (site.data && site.data.siteConfig) {
-        site.data.siteConfig.forEach(element => {
-            if (element.applicationKey = app.name) {
-                siteConfig = element.config;
-            }
-        });
+function getAppSettings(site) {
+    let siteConfig;
+    if (!site.data) {
+        throw ClientException("Missing property id? No app configuration found");
+    }
+    if (!site.data.siteConfig) {
+        throw ClientException("Missing app configuration")
+    }
+    site.data.siteConfig.forEach(element => {
+        if (element.applicationKey = app.name) {
+            siteConfig = element.config;
+        }
+    });
+    if (!siteConfig.propertyId) {
+        throw ClientException("Missing propertyId. See app configuration");
     }
 
-    if (!siteConfig || !siteConfig.propertyId) {
-        //TODO Trigger this aka test it
-        return ErrorResponse("Missing property id? No site configuration found for the analytics integration");
+    return siteConfig;
+}
+
+function get(req) {
+    let credentialPath
+    let content;
+    let type;
+    let siteConfig;
+    let reportData;
+    let site;
+
+    try {
+        credentialPath = getCredentialsPath(app);
+        content = getContent(req);
+        type = getContentType(content);
+        site = contentLib.getSite({ key: content._id });
+        siteConfig = getAppSettings(site);
     }
+    catch (e) {
+        return ErrorResponse(e.message);
+    }
+
+    const report = __.newBean("com.enonic.app.analytics.report.auth.GoogleReportData");
 
     if (type === "site") {
         reportData = report.runSiteReports(siteConfig.propertyId, credentialPath);
@@ -68,35 +100,18 @@ function get(req) {
 
     const widgetId = "widget-com-enonic-app-gareport"; // app.name.replace(/\./g, "-");
 
+    const model = {
+        type,
+        serviceUrl,
+        scriptAssetUrl,
+        cssUrl,
+        widgetId,
+        reportData
+    };
+
     return {
         contentType: 'text/html',
-        body: `<widget id="${widgetId}" data-type="${type}" data-settingsurl="${serviceUrl}">
-            <link href="${cssUrl}" rel="stylesheet">
-            <div id="googleAnalyticsSiteData">
-                <h1>Last month</h1>
-                <!-- site -->
-                <div class="container" id="googleAnalyticsGeoChart">
-                    <h2>Active users</h2>
-                    <div class="chart"></div>
-                </div>
-                <div id="googleAnalyticsSiteUserChart"></div>
-                <div id="googleAnalyticsDevices"></div>
-                <div id="googleAnalyticsBrowsers"></div>
-                <div class="container" id="googleAnalyticsPages">
-                    <h2>Top pages<h2>
-                    <div class="chart"></div>
-                </div>
-                <div class="container" id="googleAnalyticsReferer">
-                    <h2>Top Referrers<h2>
-                    <div class="chart"></div>
-                </div>
-                <!-- Page -->
-                <div id="googleAnalyticsPageViews"></div>
-                <div id="googleAnalyticsVisiters"></div>
-            </div>
-            <script id="googleAnalyticsReportData" type="application/json">${reportData}</script>
-            <script type="text/javascript" src="${scriptAssetUrl}"></script>
-        </widget>`,
+        body: thymeleaf.render(view, model),
     }
 }
 

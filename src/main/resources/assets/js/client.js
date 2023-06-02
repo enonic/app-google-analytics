@@ -74,6 +74,7 @@ function drawData(ApiKey) {
 
     function drawAllCharts(apiKey) {
         const reportElem = document.getElementById("googleAnalyticsReportData");
+
         const analyticsData = JSON.parse(reportElem.textContent);
 
         const type = window.googleWidget.dataset.type;
