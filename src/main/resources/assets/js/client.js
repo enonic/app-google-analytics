@@ -73,7 +73,8 @@ function drawData(ApiKey) {
     }
 
     function drawAllCharts(apiKey) {
-        const reportElem = document.getElementById("googleAnalyticsReportData");
+        const reportElem = document.getElementById("gaReportData");
+
         const analyticsData = JSON.parse(reportElem.textContent);
 
         const type = window.googleWidget.dataset.type;
@@ -111,7 +112,7 @@ function drawData(ApiKey) {
             width: "90%",
         };
 
-        const element = document.getElementById('googleAnalyticsGeoChart');
+        const element = document.getElementById('gaGeoChart');
         element.style.display = "block";
 
         const usersGeoChart = new google.visualization.GeoChart(element.querySelector('.chart'));
@@ -146,7 +147,7 @@ function drawData(ApiKey) {
             width: "90%"
         };
 
-        const chart = new google.charts.Bar(document.getElementById('googleAnalyticsSiteUserChart'));
+        const chart = new google.charts.Bar(document.getElementById('gaSiteUserChart'));
 
         chart.draw(chartData, google.charts.Bar.convertOptions(options));
     }
@@ -168,7 +169,7 @@ function drawData(ApiKey) {
             }
         };
 
-        const chart = new google.visualization.PieChart(document.getElementById('googleAnalyticsDevices'));
+        const chart = new google.visualization.PieChart(document.getElementById('gaDevices'));
 
         chart.draw(chartData, options);
     }
@@ -190,7 +191,7 @@ function drawData(ApiKey) {
             }
         }
 
-        const chart = new google.visualization.PieChart(document.getElementById('googleAnalyticsBrowsers'));
+        const chart = new google.visualization.PieChart(document.getElementById('gaBrowsers'));
 
         chart.draw(chartData, options);
     }
@@ -203,7 +204,7 @@ function drawData(ApiKey) {
             page: "enable"
         };
 
-        const element = document.getElementById('googleAnalyticsPages');
+        const element = document.getElementById('gaPages');
         element.style.display = "block";
 
         const chart = new google.visualization.Table(element.querySelector('.chart'));
@@ -219,7 +220,7 @@ function drawData(ApiKey) {
             page: "enable",
         };
 
-        const element = document.getElementById('googleAnalyticsReferer');
+        const element = document.getElementById('gaReferer');
         element.style.display = "block";
 
         const chart = new google.visualization.Table(element.querySelector('.chart'));
@@ -242,7 +243,7 @@ function drawData(ApiKey) {
         }
 
         if (chartData.getNumberOfRows() > 0) {
-            const element = document.getElementById('googleAnalyticsPageViews');
+            const element = document.getElementById('gaPageViews');
             element.style.display = "block";
 
             const chart = new google.visualization.LineChart(element);
@@ -261,7 +262,7 @@ function drawData(ApiKey) {
             width: "90%"
         }
 
-        const chart = new google.visualization.PieChart(document.getElementById('googleAnalyticsVisiters'));
+        const chart = new google.visualization.PieChart(document.getElementById('gaVisiters'));
 
         chart.draw(chartData, options);
     }
@@ -330,6 +331,6 @@ function showError(message) {
     errorDiv.classList.add("error");
 
     errorDiv.textContent = message;
-    document.querySelector('#googleAnalyticsSiteData').style.display = "none;"
+    document.querySelector('#gaSiteData').style.display = "none;"
     window.googleWidget.appendChild(errorDiv);
 }

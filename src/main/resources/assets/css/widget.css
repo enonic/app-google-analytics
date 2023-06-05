@@ -7,11 +7,11 @@
 #widget-com-enonic-app-gareport>h1 {
     font-size: 2rem;
 }
-#googleAnalyticsDevices,
-#googleAnalyticsBrowsers {
+#gaDevices,
+#gaBrowsers {
     display: inline-block;
 }
-#googleAnalyticsReferer {
+#gaReferer {
     margin-top: 20px;
 }
 
