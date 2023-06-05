@@ -1,158 +1,139 @@
-# App-google-report
-How to setup the google report app with Enonic XP.
+# Google Analytics for Enonic XP
+
+This guide will help you set up Google Analytics app for Enonic XP.
+
+IMPORTANT: The app requires a Google Analytics 4 account and will not support deprecated Universal Analytics.
 
 :toc:
 
 ## Tracking
 
-Setting up the tracking only required one value to the application set on the site. Setting up the widget requires a couple addition steps.
+To enable tracking script on your site you will need "Measurement ID" from Google Analytics.
 
-The app requires a google analytics acount setup for the site you want to track.
+. In Google Analytics console select the correct account for your website, then click the cog icon located on the bottom left.
 
-In google analytics go to admin settings
-
-The settings are located on the bottom left
-
-image::images/AdminButton.png[]
-
-There should be a datastream connected to the site for tracking
+. Click "Data Streams" in the right-hand menu:
 
 image::images/AdminPanel.png[]
 
-Opening up the data stream and select the one for the site we want to track.
+3 . Click a data stream on the "Web" tab to open the Web stream details:
 
 image::images/DataStream.png[]
 
-Find its measureId and copy the value. (Use the icon next to it)
+4 . Locate "Measurement ID" and use the icon next to it to copy value to the clipboard.
 
-Now we jsut need to add this value to our site in Enonic
+Now add this value to site config inside Content Studio.
 
-Just login to the server.
-If you have not allready installed the google report application do that in the application tool found when opening the dashboard.
+5 . Log in to Enonic XP and open Content Studio.
 
-In content studio add the application to your site
-And open up settings for this app (pencil icon)
+TIP: If you haven't already installed the "Google Analytics" app, do that in the Applications tool found in the XP Launcher panel
+(use "XP" icon in the top-right corner to open it).
+
+6 . In Content Studio edit your site and add "Google Analytics" application to it, then open app config (click the "pencil icon"):
 
 image::images/SiteApplication.png[]
 
-In the site settings simply add a new measureId and enable tracking.
+7 . Paste value from the clipboard to the "Measurement ID" config field and enable tracking by checking off "Enable tracking" checkbox.
 
 image::images/AppSettings.png[]
 
-Thats it. If you publish the site now the tracking will be live and you can track user data.
+That's it. When you publish the site, the tracking script will go live and will start collecting data for analytics.
 
 ## Widget
 
-Setting up the widget has a few more steps, but gives a nice overview over the statistics of the site.
-The next setup will require file access to the servers configuration files
+Setting up the widget has a few more steps, but gives a nice overview over statistics collected for the site.
 
-In the analytics admin page. (Cog wheel at the bottom left of the page)
+IMPORTANT: The following setup will require access to configuration files on the server hosting Enonic XP.
 
-Find the Property Settings and press it to show its related information.
+. Open the Analytics admin page (click the cog icon located on the bottom left)
+
+. Click Property Settings in the right-hand menu:
 
 image::images/PropertySettings.png[]
 
-When opening it find its property ID and copy it
+3 . Locate "Property ID" and use the icon next to it to copy value to the clipboard.
 
 image::images/PropertyId.png[]
 
-Paste it into the app settings in content studio
+4 . Paste the value into "Property Id" field in the app config form in Content Studio:
 
 image::images/AppSettingsPropertyId.png[]
 
-Now that we are done with the site setup. We just have to configuration couple of apis and setting the authentication
-This is done with a service account in the app configuration file.
+You are done with the site setup.
 
-First create an account in https://console.cloud.google.com
-This is where we will create a service account for authentication with our app.
+Now let's set up a service account and configure the app:
 
-After creating an account open up the IAM & Admin page and the Service Accounts sub menu
+. Go to https://console.cloud.google.com[Google Cloud console] and create an account, if you haven't already done so.
 
-image::images/CloudAdminServiceAccounts.png[]
-
-Create a new service account. This will be used to access the analytics data.
-Give it any name and generate an email address for the service account.
-
-image::images/ServiceAccountCreate.png[]
-
-After creating the serivice we need to enable the apis that it will access
-
-Go to our APIs & Services on https://console.cloud.google.com/apis/dashboard
-
-On the page press the button to enable apis and services
+. Go to "https://console.cloud.google.com/apis/dashboard[APIs & Services]" and click the "+ Enable APIs and Services" button:
 
 image::images/Enable_APIs.png[]
 
-Enable the *Google Analytics Data API*
+3 . Search for *Google Analytics Data API*, select it and click "Enable" button.
 
-It should now have access to the api. We will later add it to our google analytics service.
+4 . Go to https://console.cloud.google.com/iam-admin[IAM & Admin] and select "Service Accounts" from the submenu:
 
-With this service we will need to create a access key.
-Click the new service key that we just created an go to the keys tab.
+image::images/CloudAdminServiceAccounts.png[]
+
+5 . Create a new service account that will access the API you enabled. This will be used to access the analytics data.
+Give it any name and generate "Service account ID" (email address), then click "Create and Continue":
+
+image::images/ServiceAccountCreate.png[]
+
+6 . Click the new service account you have just created and go to the "Keys" tab.
 
 image::images/ServiceAccountKeys.png[]
 
-Add a new key. Its needs to be of type *json*
+7 . Add a new key of type *json*. Json file will be generated and automatically downloaded to your computer. Securely store this file.
 
-Securley store this key. We will need to upload it to the server hosting enonic.
+8 . Create app configuration file called `com.enonic.app.ga.cfg` in the `{xp_home}/config` folder on the server hosting Enonic XP.
 
-Go back to the overview of all accounts and copy the email adresse of our service
+9 . Add this line to the config file:
 
-We need to copy the data to our home/config folder on the server
+`ga.credentialPath = ${xp.home}/config/<key_file_name.json>`
 
-The configuration files on the server are located here:
+where `key_file_name.json` should be replaced with name of the key file you downloaded.
 
-`/home/config`
+10 . Upload the key file itself to the server and add it to the same folder where the app config file is.
 
-We need to create a configuration file for our app.
+Now the credentials are set up.
 
-`com.enonic.app.ga.cfg`
+What's left is to give access to your service account in Google Analytics.
 
-We need to put our developer key in the same folder.
-This allows our app to access it.
+1 . Go back to the service account list and copy email address of the new service account.
 
-now in the `com.enonic.app.ga.cfg` file we need to add these values:
-
-ga.credentialPath = ${xp.home}/config/<key_file_name.json>
-
-Replce key_file_name with the filename of the key we downloaded.
-
-Now the credentials are setup.
-
-We just need to give access to our service account in google analytics.
-
-Just go to Property Access Management in our google analytics
+2 . Go to "Property Access Management" in the Google Analytics Admin:
 
 image::images/ProperyAccessManagment.png[]
 
-Add a new user in property access managment.
+3 . Add a new user:
 
 image::images/NewPropertyUser.png[]
 
-Use the email address of our service account.
-It only needs the viewer role for the analytics data.
+4 . Use the email address of your service account. It only needs the viewer role for the analytics data.
 
 After adding the user the widget should work and show data for your site.
 
-## Maps api key
+## Maps API key
 
-If you want to enable google maps api too, then you will need to eneable the google analtycis api.
+If you want to enable Google Maps API (to show world map in the GA widget), then you will need to enable the Google Analytics API.
 
-Go to our APIs & Services on https://console.cloud.google.com/apis/dashboard
+. Go to https://console.cloud.google.com/apis/dashboard[APIs & Services]
 
-Press the enable apis and services and search for the `maps javascript api`
-You will get a maps api key after enabling it.
+. Press the "Enable APIs and services" and search for `maps javascript api`.
 
-ga.mapsApiKey = <google_maps_api_key_here>
+. Enable the API and you will get a maps API key.
 
-## Content Security policy.
+. Add this line to the config file:
 
-The widget uses a lot of remote resources and that is by default blocked in content studio.
+`ga.mapsApiKey = <google_maps_api_key_here>`
 
-Here is the content studio configuration of the content security policy needed to show the widget
+## Content Security Policy
 
-The configration location is `/home/config`
+The widget uses a lot of remote resources and that is by default blocked in Content Studio's Content Security Policy.
+To enable resources required for Google Analytics, add this line to the Content Studio's config file (`/{$xp_home}/config/com.enonic.app.contentstudio.cfg`):
 
-`com.enonic.app.contentstudio.cfg`
+.com.enonic.app.contentstudio.cfg
+```
 contentSecurityPolicy.header=default-src 'self' https://*.gstatic.com; connect-src 'self' ws: wss: https://*.gstatic.com https://*.googleapis.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.google.com https://*.googleapis.com https://*.gstatic.com; object-src 'none'; style-src 'self' 'unsafe-inline' https://*.googleapis.com https://*.gstatic.com; img-src 'self' https://*.gstatic.com data:; frame-src 'self' https://*.googleapis.com;
-
+```
