@@ -130,10 +130,10 @@ If you want to enable Google Maps API (to show world map in the GA widget), then
 
 ## Content Security Policy
 
-The widget uses a lot of remote resources and that is by default blocked in Content Studio's Content Security Policy.
+The widget uses remote assets (fonts, styles and scripts from Google servers) that are by default blocked by Content Studio's Content Security Policy.
 To enable resources required for Google Analytics, add this line to the Content Studio's config file (`/{$xp_home}/config/com.enonic.app.contentstudio.cfg`):
 
 .com.enonic.app.contentstudio.cfg
 ```
-contentSecurityPolicy.header=default-src 'self' https://*.gstatic.com; connect-src 'self' ws: wss: https://*.gstatic.com https://*.googleapis.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.google.com https://*.googleapis.com https://*.gstatic.com; object-src 'none'; style-src 'self' 'unsafe-inline' https://*.googleapis.com https://*.gstatic.com; img-src 'self' https://*.gstatic.com data:; frame-src 'self' https://*.googleapis.com;
+contentSecurityPolicy.header=default-src 'self' https://*.gstatic.com; connect-src 'self' ws: wss: https://*.gstatic.com https://*.googleapis.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.google.com https://*.googleapis.com https://*.gstatic.com; object-src 'none'; style-src 'self' 'unsafe-inline' http://*.googleapis.com https://*.googleapis.com https://*.gstatic.com; img-src 'self' https://*.gstatic.com data:; frame-src 'self' https://*.googleapis.com;
 ```
