@@ -1,13 +1,17 @@
 <widget th:id="${widgetId}" th:attr="data-type=${type}, data-settingsurl=${serviceUrl}">
     <link th:href="${cssUrl}" rel="stylesheet">
-    <div id="gaSiteData">
+    <div id="gaData">
         <h1>Last month</h1>
         <!-- site -->
         <div class="container" id="gaGeoChart">
             <h2>Active users</h2>
             <div class="chart"></div>
         </div>
-        <div id="gaSiteUserChart"></div>
+        <div class="container" id="gaSiteUserChart">
+            <h2>Site users</h2>
+            <div class="chart"></div>
+        </div>
+
         <div id="gaDevices"></div>
         <div id="gaBrowsers"></div>
         <div class="container" id="gaPages">
