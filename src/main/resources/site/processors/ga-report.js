@@ -19,7 +19,7 @@ exports.responseProcessor = function (req, res) {
         applicationKey: app.name
     });
 
-    const measurementID = siteConfig.measureId || '';
+    const measurementID = siteConfig.measurementId || '';
     const enableTracking = siteConfig.enableTracking || false;
     const enableAnonymization = siteConfig.enableAnonymization || false;
 

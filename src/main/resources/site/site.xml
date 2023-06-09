@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
     <form>
-        <input type="TextLine" name="measureId">
-            <label>Measurement ID</label>
-            <help-text>Measure id looks like: G-XXXXXXX. Where X is numbers</help-text>
+        <input type="TextLine" name="measurementId">
+            <label>Measurement Id</label>
+            <help-text>Measurement Id (G-XXXXXXX, where X is a digit)</help-text>
             <config>
                 <regexp>^G-[\w\d-]+$</regexp>
             </config>
