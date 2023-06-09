@@ -3,7 +3,7 @@
     <form>
         <input type="TextLine" name="measurementId">
             <label>Measurement Id</label>
-            <help-text>Measurement Id (G-XXXXXXX, where X is a digit)</help-text>
+            <help-text>Measurement Id (G-XXXXXXXXX)</help-text>
             <config>
                 <regexp>^G-[\w\d-]+$</regexp>
             </config>
