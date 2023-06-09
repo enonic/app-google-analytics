@@ -131,9 +131,6 @@ function drawData(ApiKey) {
         );
 
         const options = {
-            chart: {
-                title: 'Site users'
-            },
             vAxis: {
                 title: "User count",
                 minValue: 0
@@ -147,7 +144,10 @@ function drawData(ApiKey) {
             width: "90%"
         };
 
-        const chart = new google.charts.Bar(document.getElementById('gaSiteUserChart'));
+        const element = document.getElementById('gaSiteUserChart');
+        element.style.display = "block";
+
+        const chart = new google.charts.Bar(element.querySelector(".chart"));
 
         chart.draw(chartData, google.charts.Bar.convertOptions(options));
     }

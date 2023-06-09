@@ -19,6 +19,12 @@
     display: none;
 }
 
-.container>h2 {
-    font-size: 1.2rem;
+#gaData h1 {
+    font-size: 1.3rem;
+    line-height: 2rem;
+}
+
+#gaData h2 {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
 }
