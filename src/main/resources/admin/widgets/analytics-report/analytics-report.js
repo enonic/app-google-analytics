@@ -4,6 +4,8 @@ const thymeleaf = require('/lib/thymeleaf');
 
 const view = resolve("analytics-report.html");
 
+const forceArray = (data) => (Array.isArray(data) ? data : [data]);
+
 function ClientException(message) {
     this.name = "ClientException";
     this.message = message;
@@ -46,19 +48,16 @@ function getContentType(content) {
     // A bad alternative is executing it in a created context
 function getAppSettings(site) {
     let siteConfig;
-    if (!site.data) {
-        throw new ClientException("Missing property id? No app configuration found");
+    if (!site.data || !site.data.siteConfig) {
+        throw new ClientException("Missing app configuration");
     }
-    if (!site.data.siteConfig) {
-        throw new ClientException("Missing app configuration")
-    }
-    site.data.siteConfig.forEach(element => {
+    forceArray(site.data.siteConfig).forEach(element => {
         if (element.applicationKey == app.name) {
             siteConfig = element.config;
         }
     });
     if (!siteConfig.propertyId) {
-        throw new ClientException("Missing propertyId. See app configuration");
+        throw new ClientException("Missing Property Id in app configuration");
     }
 
     return siteConfig;
