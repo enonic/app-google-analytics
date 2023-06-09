@@ -90,7 +90,7 @@ image::images/ServiceAccountKeys.png[]
 
 9 . Add this line to the config file:
 
-`ga.credentialPath = ${xp.home}/config/<key_file_name.json>`
+`ga.credentialFile = <key_file_name.json>`
 
 where `key_file_name.json` should be replaced with name of the key file you downloaded.
 

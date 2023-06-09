@@ -11,12 +11,12 @@ function ClientException(message) {
 
 function getCredentialsPath(appRef) {
     if (!appRef.config) {
-        throw ClientException("No config found");
+        throw new ClientException("No config found");
     }
-    if (!appRef.config["ga.credentialPath"]) {
-        throw ClientException("No path to credentials found");
+    if (!appRef.config["ga.credentialFile"]) {
+        throw new ClientException("No credential file configured");
     }
-    return appRef.config["ga.credentialPath"];
+    return appRef.config["ga.credentialFile"];
 }
 
 function getContent(req) {
@@ -28,7 +28,7 @@ function getContent(req) {
     }
 
     if (content == null) {
-        throw ClientException("No content selected");
+        throw new ClientException("No content selected");
     }
 
     return content;
@@ -44,21 +44,21 @@ function getContentType(content) {
 
 // Would like a better way to get site config
     // A bad alternative is executing it in a created context
-function getAppSettings(site) {
+function getAppSettings(site, appRef) {
     let siteConfig;
     if (!site.data) {
-        throw ClientException("Missing property id? No app configuration found");
+        throw new ClientException("Missing property id? No app configuration found");
     }
     if (!site.data.siteConfig) {
-        throw ClientException("Missing app configuration")
+        throw new ClientException("Missing app configuration")
     }
     site.data.siteConfig.forEach(element => {
-        if (element.applicationKey = app.name) {
+        if (element.applicationKey = appRef.name) {
             siteConfig = element.config;
         }
     });
     if (!siteConfig.propertyId) {
-        throw ClientException("Missing propertyId. See app configuration");
+        throw new ClientException("Missing propertyId. See app configuration");
     }
 
     return siteConfig;
@@ -77,7 +77,7 @@ function get(req) {
         content = getContent(req);
         type = getContentType(content);
         site = contentLib.getSite({ key: content._id });
-        siteConfig = getAppSettings(site);
+        siteConfig = getAppSettings(site, app);
     }
     catch (e) {
         return ErrorResponse(e.message);

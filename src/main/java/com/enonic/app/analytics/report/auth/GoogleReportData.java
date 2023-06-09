@@ -30,8 +30,7 @@ public class GoogleReportData {
             throw new IllegalArgumentException("No credentialsFile provided");
         }
 
-        Path credentialFile = Paths.get(credentialPath);
-
+        Path credentialFile = com.enonic.xp.home.HomeDir.get().toFile().toPath().resolve("config").resolve(credentialPath);
 
         try(InputStream credStream = Files.newInputStream(credentialFile)) {
             GoogleCredentials credentials = ServiceAccountCredentials.fromStream(credStream);
