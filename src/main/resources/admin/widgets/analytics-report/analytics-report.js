@@ -11,10 +11,10 @@ function ClientException(message) {
 
 function getCredentialsPath(appRef) {
     if (!appRef.config) {
-        throw ClientException("No config found");
+        throw new ClientException("No config found");
     }
     if (!appRef.config["ga.credentialPath"]) {
-        throw ClientException("No path to credentials found");
+        throw new ClientException("No path to credentials found");
     }
     return appRef.config["ga.credentialPath"];
 }
@@ -28,7 +28,7 @@ function getContent(req) {
     }
 
     if (content == null) {
-        throw ClientException("No content selected");
+        throw new ClientException("No content selected");
     }
 
     return content;
@@ -47,18 +47,18 @@ function getContentType(content) {
 function getAppSettings(site) {
     let siteConfig;
     if (!site.data) {
-        throw ClientException("Missing property id? No app configuration found");
+        throw new ClientException("Missing property id? No app configuration found");
     }
     if (!site.data.siteConfig) {
-        throw ClientException("Missing app configuration")
+        throw new ClientException("Missing app configuration")
     }
     site.data.siteConfig.forEach(element => {
-        if (element.applicationKey = app.name) {
+        if (element.applicationKey == app.name) {
             siteConfig = element.config;
         }
     });
     if (!siteConfig.propertyId) {
-        throw ClientException("Missing propertyId. See app configuration");
+        throw new ClientException("Missing propertyId. See app configuration");
     }
 
     return siteConfig;
