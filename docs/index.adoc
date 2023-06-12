@@ -14,11 +14,11 @@ To enable tracking script on your site you will need "Measurement ID" from Googl
 
 . Click "Data Streams" in the right-hand menu:
 
-image::images/AdminPanel.png[]
+image::images/AdminPanel.png[,75%]
 
 3 . Click a data stream on the "Web" tab to open the Web stream details:
 
-image::images/DataStream.png[]
+image::images/DataStream.png[,75%]
 
 4 . Locate "Measurement ID" and use the icon next to it to copy value to the clipboard.
 
@@ -31,11 +31,11 @@ TIP: If you haven't already installed the "Google Analytics" app, do that in the
 
 6 . In Content Studio edit your site and add "Google Analytics" application to it, then open app config (click the "pencil icon"):
 
-image::images/SiteApplication.png[]
+image::images/SiteApplication.png[,75%]
 
 7 . Paste value from the clipboard to the "Measurement ID" config field and enable tracking by checking off "Enable tracking" checkbox.
 
-image::images/AppSettings.png[]
+image::images/AppSettings.png[,75%]
 
 That's it. When you publish the site, the tracking script will go live and will start collecting data for analytics.
 
@@ -49,15 +49,15 @@ IMPORTANT: The following setup will require access to configuration files on the
 
 . Click Property Settings in the right-hand menu:
 
-image::images/PropertySettings.png[]
+image::images/PropertySettings.png[,75%]
 
 3 . Locate "Property ID" and use the icon next to it to copy value to the clipboard.
 
-image::images/PropertyId.png[]
+image::images/PropertyId.png[,75%]
 
 4 . Paste the value into "Property Id" field in the app config form in Content Studio:
 
-image::images/AppSettingsPropertyId.png[]
+image::images/AppSettingsPropertyId.png[,75%]
 
 You are done with the site setup.
 
@@ -67,22 +67,22 @@ Now let's set up a service account and configure the app:
 
 . Go to "https://console.cloud.google.com/apis/dashboard[APIs & Services]" and click the "+ Enable APIs and Services" button:
 
-image::images/Enable_APIs.png[]
+image::images/Enable_APIs.png[,25%]
 
 3 . Search for *Google Analytics Data API*, select it and click "Enable" button.
 
 4 . Go to https://console.cloud.google.com/iam-admin[IAM & Admin] and select "Service Accounts" from the submenu:
 
-image::images/CloudAdminServiceAccounts.png[]
+image::images/CloudAdminServiceAccounts.png[,75%]
 
 5 . Create a new service account that will access the API you enabled. This will be used to access the analytics data.
 Give it any name and generate "Service account ID" (email address), then click "Create and Continue":
 
-image::images/ServiceAccountCreate.png[]
+image::images/ServiceAccountCreate.png[,75%]
 
 6 . Click the new service account you have just created and go to the "Keys" tab.
 
-image::images/ServiceAccountKeys.png[]
+image::images/ServiceAccountKeys.png[,75%]
 
 7 . Add a new key of type *json*. Json file will be generated and automatically downloaded to your computer. Securely store this file.
 
@@ -104,11 +104,11 @@ What's left is to give access to your service account in Google Analytics.
 
 2 . Go to "Property Access Management" in the Google Analytics Admin:
 
-image::images/ProperyAccessManagment.png[]
+image::images/ProperyAccessManagment.png[,75%]
 
 3 . Add a new user:
 
-image::images/NewPropertyUser.png[]
+image::images/NewPropertyUser.png[,25%]
 
 4 . Use the email address of your service account. It only needs the viewer role for the analytics data.
 
