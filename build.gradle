@@ -20,7 +20,7 @@ dependencies {
     include "com.enonic.xp:lib-portal:${xpVersion}"
     include "com.google.api-client:google-api-client:2.4.0"
     include "com.google.auth:google-auth-library-oauth2-http:1.23.0"
-    include 'com.google.analytics:google-analytics-data:0.50.0'
+    include 'com.google.analytics:google-analytics-data:0.52.0'
     include "com.enonic.lib:lib-thymeleaf:2.1.0"
 }
 
