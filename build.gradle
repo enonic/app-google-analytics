@@ -18,7 +18,7 @@ dependencies {
     implementation "com.enonic.xp:jaxrs-api:${xpVersion}"
     include "com.enonic.xp:lib-content:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
-    include "com.google.api-client:google-api-client:2.8.0"
+    include "com.google.api-client:google-api-client:2.8.1"
     include "com.google.auth:google-auth-library-oauth2-http:1.37.1"
     include 'com.google.analytics:google-analytics-data:0.82.0'
     include "com.enonic.lib:lib-thymeleaf:2.1.1"
