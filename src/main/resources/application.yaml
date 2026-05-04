@@ -1,0 +1,5 @@
+kind: "Application"
+title: "Google Analytics"
+description: "Track and report website traffic with Google Analytics"
+vendorName: "Enonic AS"
+vendorUrl: "https://github.com/enonic"

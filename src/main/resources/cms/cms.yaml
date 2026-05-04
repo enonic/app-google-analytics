@@ -1,0 +1,32 @@
+kind: "CMS"
+form:
+  - type: "TextLine"
+    name: "measurementId"
+    label: "Measurement Id"
+    helpText: "Measurement Id (G-XXXXXXXXX)"
+    regexp: "^G-[\\w\\d-]+$"
+    occurrences:
+      min: 0
+      max: 1
+  - type: "Checkbox"
+    name: "enableTracking"
+    label: "Enable tracking"
+    occurrences:
+      min: 0
+      max: 1
+  - type: "Checkbox"
+    name: "enableAnonymization"
+    label: "Enable IP anonymization"
+    occurrences:
+      min: 0
+      max: 1
+  - type: "FieldSet"
+    label: "Widget configuration"
+    items:
+      - type: "TextLine"
+        name: "propertyId"
+        label: "Property Id"
+        regexp: "^[0-9]*$"
+        occurrences:
+          min: 0
+          max: 1

@@ -1,0 +1,5 @@
+kind: "AdminExtension"
+title: "Google Analytics"
+description: "Report of website traffic"
+interfaces:
+  - "contentstudio.contextpanel"
