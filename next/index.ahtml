@@ -461,7 +461,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The app requires a Google Analytics 4 account and will not support deprecated Universal Analytics.
+This integration requires a Google Analytics 4 account and will not support deprecated Universal Analytics.
 </td>
 </tr>
 </table>
@@ -486,7 +486,7 @@ The app requires a Google Analytics 4 account and will not support deprecated Un
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/AdminPanel.png" alt="AdminPanel">
+<img src="images/AdminPanel.png" alt="AdminPanel" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -494,7 +494,7 @@ The app requires a Google Analytics 4 account and will not support deprecated Un
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/DataStream.png" alt="DataStream">
+<img src="images/DataStream.png" alt="DataStream" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -524,7 +524,7 @@ If you haven&#8217;t already installed the "Google Analytics" app, do that in th
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/SiteApplication.png" alt="SiteApplication">
+<img src="images/SiteApplication.png" alt="SiteApplication" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -532,7 +532,7 @@ If you haven&#8217;t already installed the "Google Analytics" app, do that in th
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/AppSettings.png" alt="AppSettings">
+<img src="images/AppSettings.png" alt="AppSettings" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -570,7 +570,7 @@ The following setup will require access to configuration files on the server hos
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/PropertySettings.png" alt="PropertySettings">
+<img src="images/PropertySettings.png" alt="PropertySettings" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -578,7 +578,7 @@ The following setup will require access to configuration files on the server hos
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/PropertyId.png" alt="PropertyId">
+<img src="images/PropertyId.png" alt="PropertyId" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -586,7 +586,7 @@ The following setup will require access to configuration files on the server hos
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/AppSettingsPropertyId.png" alt="AppSettingsPropertyId">
+<img src="images/AppSettingsPropertyId.png" alt="AppSettingsPropertyId" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -607,7 +607,7 @@ The following setup will require access to configuration files on the server hos
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/Enable_APIs.png" alt="Enable APIs">
+<img src="images/Enable_APIs.png" alt="Enable APIs" width="25%">
 </div>
 </div>
 <div class="paragraph">
@@ -618,7 +618,7 @@ The following setup will require access to configuration files on the server hos
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/CloudAdminServiceAccounts.png" alt="CloudAdminServiceAccounts">
+<img src="images/CloudAdminServiceAccounts.png" alt="CloudAdminServiceAccounts" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -627,7 +627,7 @@ Give it any name and generate "Service account ID" (email address), then click "
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/ServiceAccountCreate.png" alt="ServiceAccountCreate">
+<img src="images/ServiceAccountCreate.png" alt="ServiceAccountCreate" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -635,7 +635,7 @@ Give it any name and generate "Service account ID" (email address), then click "
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/ServiceAccountKeys.png" alt="ServiceAccountKeys">
+<img src="images/ServiceAccountKeys.png" alt="ServiceAccountKeys" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -670,7 +670,7 @@ Give it any name and generate "Service account ID" (email address), then click "
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/ProperyAccessManagment.png" alt="ProperyAccessManagment">
+<img src="images/ProperyAccessManagment.png" alt="ProperyAccessManagment" width="75%">
 </div>
 </div>
 <div class="paragraph">
@@ -678,7 +678,7 @@ Give it any name and generate "Service account ID" (email address), then click "
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/NewPropertyUser.png" alt="NewPropertyUser">
+<img src="images/NewPropertyUser.png" alt="NewPropertyUser" width="25%">
 </div>
 </div>
 <div class="paragraph">
@@ -734,7 +734,7 @@ To enable resources required for Google Analytics, add this line to the Content 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-05-06 12:30:39 UTC
+Last updated 2026-05-06 12:31:04 UTC
 </div>
 </div>
 </body>
