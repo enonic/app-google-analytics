@@ -14,6 +14,7 @@ dependencies {
     include "com.google.auth:google-auth-library-oauth2-http:1.47.0"
     include 'com.google.analytics:google-analytics-data:0.103.0'
     include "com.enonic.lib:lib-thymeleaf:3.0.0-SNAPSHOT"
+    include "com.enonic.lib:lib-static:3.0.0-SNAPSHOT"
 }
 
 repositories {

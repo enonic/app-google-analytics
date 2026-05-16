@@ -1,8 +1,11 @@
 const portalLib = require('/lib/xp/portal');
 const contentLib = require('/lib/xp/content');
 const thymeleaf = require('/lib/thymeleaf');
+const staticLib = require('/lib/enonic/static');
 
 const view = resolve("analytics-report.html");
+
+const STATIC_BASE = '/_static';
 
 const forceArray = (data) => (Array.isArray(data) ? data : [data]);
 
@@ -94,8 +97,9 @@ function get(req) {
         service: 'gaSettings',
         type: "absolute",
     })
-    const scriptAssetUrl = portalLib.assetUrl({path: 'js/client.js'});
-    const cssUrl = portalLib.assetUrl({ path: 'css/widget.css' });
+    const assetsUri = (req && req.contextPath ? req.contextPath : '') + STATIC_BASE;
+    const scriptAssetUrl = assetsUri + '/js/client.js';
+    const cssUrl = assetsUri + '/css/widget.css';
 
     const widgetId = "widget-com-enonic-app-gareport"; // app.name.replace(/\./g, "-");
 
@@ -126,4 +130,19 @@ function ErrorResponse(message) {
     }
 }
 
-exports.get = get;
+function serveStatic(req) {
+    return staticLib.requestHandler(req, {
+        index: false,
+        root: '/assets',
+        relativePath: staticLib.mappedRelativePath(STATIC_BASE),
+    });
+}
+
+exports.get = (req) => {
+    const rawPath = (req && req.rawPath) || '';
+    const contextPath = (req && req.contextPath) || '';
+    if (rawPath.indexOf(contextPath + STATIC_BASE + '/') === 0) {
+        return serveStatic(req);
+    }
+    return get(req);
+};
