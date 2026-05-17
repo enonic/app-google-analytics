@@ -10,10 +10,10 @@ dependencies {
     implementation xplibs.api.jaxrs
     include xplibs.content
     include xplibs.portal
-    include "com.google.api-client:google-api-client:2.9.0"
-    include "com.google.auth:google-auth-library-oauth2-http:1.47.0"
-    include 'com.google.analytics:google-analytics-data:0.103.0'
-    include "com.enonic.lib:lib-thymeleaf:3.0.0-SNAPSHOT"
+    include libs.google.api.client
+    include libs.google.auth.library.oauth2.http
+    include libs.google.analytics.data
+    include libs.lib.thymeleaf
     include "com.enonic.lib:lib-static:3.0.0-SNAPSHOT"
     include "com.enonic.lib:lib-router:4.0.0-SNAPSHOT"
 }
