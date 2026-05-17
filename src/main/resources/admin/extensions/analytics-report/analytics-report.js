@@ -1,8 +1,12 @@
 const portalLib = require('/lib/xp/portal');
 const contentLib = require('/lib/xp/content');
 const thymeleaf = require('/lib/thymeleaf');
+const staticLib = require('/lib/enonic/static');
+const Router = require('/lib/router');
 
 const view = resolve("analytics-report.html");
+
+const STATIC_BASE = '/_static';
 
 const forceArray = (data) => (Array.isArray(data) ? data : [data]);
 
@@ -94,8 +98,9 @@ function get(req) {
         service: 'gaSettings',
         type: "absolute",
     })
-    const scriptAssetUrl = portalLib.assetUrl({path: 'js/client.js'});
-    const cssUrl = portalLib.assetUrl({ path: 'css/widget.css' });
+    const assetsUri = (req && req.contextPath ? req.contextPath : '') + STATIC_BASE;
+    const scriptAssetUrl = assetsUri + '/js/client.js';
+    const cssUrl = assetsUri + '/css/widget.css';
 
     const widgetId = "widget-com-enonic-app-gareport"; // app.name.replace(/\./g, "-");
 
@@ -126,4 +131,14 @@ function ErrorResponse(message) {
     }
 }
 
-exports.get = get;
+const router = Router();
+
+router.get(STATIC_BASE + '/{path:.*}', (req) => staticLib.requestHandler(req, {
+    index: false,
+    root: '/assets',
+    relativePath: (r) => r.pathParams.path,
+}));
+
+router.get('{path:.*}', get);
+
+exports.get = (req) => router.dispatch(req);
