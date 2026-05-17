@@ -14,8 +14,8 @@ dependencies {
     include libs.google.auth.library.oauth2.http
     include libs.google.analytics.data
     include libs.lib.thymeleaf
-    include "com.enonic.lib:lib-static:3.0.0-SNAPSHOT"
-    include "com.enonic.lib:lib-router:4.0.0-SNAPSHOT"
+    include libs.enonic.lib.statics
+    include libs.enonic.lib.router
 }
 
 repositories {
