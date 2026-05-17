@@ -1,0 +1,11 @@
+[versions]
+google-analytics-data = "0.103.0"
+google-api-client = "2.9.0"
+google-auth-library-oauth2-http = "1.47.0"
+thymeleaf = "3.0.0-SNAPSHOT"
+
+[libraries]
+google-analytics-data = { module = "com.google.analytics:google-analytics-data", version.ref = "google-analytics-data" }
+google-api-client = { module = "com.google.api-client:google-api-client", version.ref = "google-api-client" }
+google-auth-library-oauth2-http = { module = "com.google.auth:google-auth-library-oauth2-http", version.ref = "google-auth-library-oauth2-http" }
+lib-thymeleaf = { module = "com.enonic.lib:lib-thymeleaf", version.ref = "thymeleaf" }
