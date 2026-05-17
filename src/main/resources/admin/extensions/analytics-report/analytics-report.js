@@ -2,6 +2,7 @@ const portalLib = require('/lib/xp/portal');
 const contentLib = require('/lib/xp/content');
 const thymeleaf = require('/lib/thymeleaf');
 const staticLib = require('/lib/enonic/static');
+const Router = require('/lib/router');
 
 const view = resolve("analytics-report.html");
 
@@ -130,19 +131,14 @@ function ErrorResponse(message) {
     }
 }
 
-function serveStatic(req) {
-    return staticLib.requestHandler(req, {
-        index: false,
-        root: '/assets',
-        relativePath: staticLib.mappedRelativePath(STATIC_BASE),
-    });
-}
+const router = Router();
 
-exports.get = (req) => {
-    const rawPath = (req && req.rawPath) || '';
-    const contextPath = (req && req.contextPath) || '';
-    if (rawPath.indexOf(contextPath + STATIC_BASE + '/') === 0) {
-        return serveStatic(req);
-    }
-    return get(req);
-};
+router.get(STATIC_BASE + '/{path:.*}', (req) => staticLib.requestHandler(req, {
+    index: false,
+    root: '/assets',
+    relativePath: (r) => r.pathParams.path,
+}));
+
+router.get('{path:.*}', get);
+
+exports.get = (req) => router.dispatch(req);
