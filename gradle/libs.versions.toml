@@ -1,5 +1,5 @@
 [versions]
-google-analytics-data = "0.103.0"
+google-analytics-data = "0.104.0"
 google-api-client = "2.9.0"
 google-auth-library-oauth2-http = "1.48.0"
 thymeleaf = "3.0.0-SNAPSHOT"
