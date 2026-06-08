@@ -1,7 +1,7 @@
 [versions]
 google-analytics-data = "0.103.0"
 google-api-client = "2.9.0"
-google-auth-library-oauth2-http = "1.47.0"
+google-auth-library-oauth2-http = "1.48.0"
 thymeleaf = "3.0.0-SNAPSHOT"
 enonic-lib-statics = "3.0.0-SNAPSHOT"
 enonic-lib-router = "4.0.0-SNAPSHOT"
