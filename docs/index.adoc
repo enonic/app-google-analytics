@@ -1,5 +1,7 @@
 # Google Analytics for Enonic XP
 
+NOTE: Versions 4.x target XP 7+.
+
 This guide will help you set up Google Analytics app for Enonic XP.
 
 IMPORTANT: The app requires a Google Analytics 4 account and will not support deprecated Universal Analytics.
