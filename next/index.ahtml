@@ -461,7 +461,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-This integration requires a Google Analytics 4 account and will not support deprecated Universal Analytics.
+This integration requires a Google Analytics 4 account.
 </td>
 </tr>
 </table>
@@ -734,7 +734,7 @@ To enable resources required for Google Analytics, add this line to the Content 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-07-02 06:34:33 UTC
+Last updated 2026-07-02 08:45:22 UTC
 </div>
 </div>
 </body>
