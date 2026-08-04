@@ -3,7 +3,6 @@ package com.enonic.app.analytics.report;
 import org.osgi.service.component.annotations.Component;
 
 import com.enonic.xp.admin.extension.AdminExtensionResponseProcessor;
-import com.enonic.xp.descriptor.DescriptorKey;
 import com.enonic.xp.portal.PortalRequest;
 import com.enonic.xp.portal.PortalResponse;
 
@@ -12,18 +11,10 @@ import com.enonic.xp.portal.PortalResponse;
  * admin tool pages hosting it: the widget's client script loads Google Charts (scripts and styles from
  * gstatic), which fetches report data from googleapis and loads chart/map images.
  */
-@Component(immediate = true)
+@Component(immediate = true, property = "key=com.enonic.app.ga:analytics-report")
 public class AnalyticsReportResponseProcessor
     implements AdminExtensionResponseProcessor
 {
-    private static final DescriptorKey EXTENSION_KEY = DescriptorKey.from( "com.enonic.app.ga:analytics-report" );
-
-    @Override
-    public DescriptorKey getExtensionKey()
-    {
-        return EXTENSION_KEY;
-    }
-
     @Override
     public PortalResponse process( final PortalRequest request, final PortalResponse response )
     {
