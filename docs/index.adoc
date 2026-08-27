@@ -1,5 +1,7 @@
 # Google Analytics for Enonic XP
 
+NOTE: Versions 5.x target XP 8.1+.
+
 This guide will help you set up Google Analytics app for Enonic XP.
 
 IMPORTANT: This integration requires a Google Analytics 4 account.
@@ -133,7 +135,3 @@ If you want to enable Google Maps API (to show world map in the GA widget), then
 The report widget loads remote assets (scripts, styles, fonts and images) from Google servers and fetches
 report data from the Google APIs. The app adds these hosts to Content Studio's Content Security Policy on
 its own, so no CSP configuration is required.
-
-NOTE: Versions before 5.0 required a `contentSecurityPolicy.header` line in
-`{$xp_home}/config/com.enonic.app.contentstudio.cfg`. If you added one for this app, it is no longer
-needed and can be removed.
