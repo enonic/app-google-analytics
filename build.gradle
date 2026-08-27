@@ -9,7 +9,6 @@ dependencies {
     implementation xplibs.api.portal
     implementation xplibs.api.admin
     implementation xplibs.api.jaxrs
-    compileOnly 'org.osgi:org.osgi.service.component.annotations:1.5.1'
     include xplibs.content
     include xplibs.portal
     include libs.google.api.client
