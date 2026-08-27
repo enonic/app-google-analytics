@@ -451,6 +451,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Versions 5.x target XP 8.1+.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>This guide will help you set up Google Analytics app for Enonic XP.</p>
 </div>
@@ -724,26 +736,12 @@ Give it any name and generate "Service account ID" (email address), then click "
 report data from the Google APIs. The app adds these hosts to Content Studio&#8217;s Content Security Policy on
 its own, so no CSP configuration is required.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Versions before 5.0 required a <code>contentSecurityPolicy.header</code> line in
-<code>{$xp_home}/config/com.enonic.app.contentstudio.cfg</code>. If you added one for this app, it is no longer
-needed and can be removed.
-</td>
-</tr>
-</table>
-</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-27 13:08:03 UTC
+Last updated 2026-08-27 13:12:25 UTC
 </div>
 </div>
 </body>
