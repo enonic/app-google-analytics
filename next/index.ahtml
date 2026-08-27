@@ -720,21 +720,30 @@ Give it any name and generate "Service account ID" (email address), then click "
 <h2 id="content_security_policy"><a class="link" href="#content_security_policy">Content Security Policy</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The widget uses remote assets (fonts, styles and scripts from Google servers) that are by default blocked by Content Studio&#8217;s Content Security Policy.
-To enable resources required for Google Analytics, add this line to the Content Studio&#8217;s config file (<code>/{$xp_home}/config/com.enonic.app.contentstudio.cfg</code>):</p>
+<p>The report widget loads remote assets (scripts, styles, fonts and images) from Google servers and fetches
+report data from the Google APIs. The app adds these hosts to Content Studio&#8217;s Content Security Policy on
+its own, so no CSP configuration is required.</p>
 </div>
-<div class="listingblock">
-<div class="title">com.enonic.app.contentstudio.cfg</div>
-<div class="content">
-<pre class="highlight"><code>contentSecurityPolicy.header=default-src 'self' https://*.gstatic.com; connect-src 'self' ws: wss: https://*.gstatic.com https://*.googleapis.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.google.com https://*.googleapis.com https://*.gstatic.com; object-src 'none'; style-src 'self' 'unsafe-inline' http://*.googleapis.com https://*.googleapis.com https://*.gstatic.com; img-src 'self' https://*.gstatic.com data:; frame-src 'self' https://*.googleapis.com;</code></pre>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Versions before 5.0 required a <code>contentSecurityPolicy.header</code> line in
+<code>{$xp_home}/config/com.enonic.app.contentstudio.cfg</code>. If you added one for this app, it is no longer
+needed and can be removed.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-07-02 08:45:22 UTC
+Last updated 2026-08-27 13:07:55 UTC
 </div>
 </div>
 </body>
