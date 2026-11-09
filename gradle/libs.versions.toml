@@ -4,7 +4,7 @@ google-api-client = "2.9.2"
 google-auth-library-oauth2-http = "1.55.0"
 thymeleaf = "3.0.0"
 enonic-lib-statics = "3.0.0"
-enonic-lib-router = "4.0.0"
+enonic-lib-router = "4.0.1"
 
 [libraries]
 google-analytics-data = { module = "com.google.analytics:google-analytics-data", version.ref = "google-analytics-data" }
